@@ -1,0 +1,30 @@
+spring:
+  config:
+    import: "optional:file:.env"
+  datasource:
+    url: "jdbc:oracle:thin:@o16330ujkmi60ban_high?TNS_ADMIN=C:/Users/zerax/Desktop/booking-System/oracle_wallet"
+    username: ADMIN
+    password: Sunghyun@#23    
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+        format_sql: true
+        show_sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8080
