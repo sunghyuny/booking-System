@@ -1,5 +1,6 @@
 package com.booking.api.controller;
 
+import com.booking.api.dto.ApiResponse;
 import com.booking.api.dto.AuthDto;
 import com.booking.api.service.AuthService;
 import jakarta.validation.Valid;
@@ -19,14 +20,15 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody AuthDto.SignupRequest request) {
+    public ResponseEntity<ApiResponse<Void>> signup(@Valid @RequestBody AuthDto.SignupRequest request) {
         authService.signup(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입이 완료되었습니다.");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(true, "회원가입이 완료되었습니다.", null));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthDto.TokenResponse> login(@Valid @RequestBody AuthDto.LoginRequest request) {
+    public ResponseEntity<ApiResponse<AuthDto.TokenResponse>> login(@Valid @RequestBody AuthDto.LoginRequest request) {
         AuthDto.TokenResponse tokenResponse = authService.login(request);
-        return ResponseEntity.ok(tokenResponse);
+        return ResponseEntity.ok(new ApiResponse<>(true, "로그인이 완료되었습니다.", tokenResponse));
     }
 }

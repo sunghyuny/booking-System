@@ -24,15 +24,15 @@ public class AuthService {
 
     @Transactional
     public Long signup(AuthDto.SignupRequest request) {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already exists: " + request.getEmail());
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("이미 가입된 이메일입니다: " + request.getEmail());
         }
 
         Role roleEnum;
         try {
             roleEnum = Role.valueOf(request.getRole().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            roleEnum = Role.USER; // Default to normal user if invalid
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new IllegalArgumentException("유효하지 않은 권한(Role)입니다. (USER, HOTEL_ADMIN, ADMIN 중 선택)");
         }
 
         User user = User.builder()
@@ -41,7 +41,6 @@ public class AuthService {
                 .name(request.getName())
                 .role(roleEnum)
                 .build();
-
         return userRepository.save(user).getId();
     }
 
