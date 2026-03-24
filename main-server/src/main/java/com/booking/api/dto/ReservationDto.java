@@ -14,6 +14,10 @@ public class ReservationDto {
         private Long roomId;
         private LocalDate checkInDate;
         private LocalDate checkOutDate;
+        private String guestName;
+        private String guestPhone;
+        private Integer guestCount;
+        private String specialRequests;
     }
 
     @Getter
@@ -39,6 +43,18 @@ public class ReservationDto {
             this.totalPrice = totalPrice;
             this.status = status;
             this.aiCancelProb = aiCancelProb;
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class BookedDateResponse {
+        private LocalDate checkInDate;
+        private LocalDate checkOutDate;
+
+        public BookedDateResponse(LocalDate checkInDate, LocalDate checkOutDate) {
+            this.checkInDate = checkInDate;
+            this.checkOutDate = checkOutDate;
         }
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final com.booking.api.config.CorsConfig corsConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -45,15 +46,12 @@ public class SecurityConfig {
                                                                                                          // testing if
                                                                                                          // needed
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**", "/api/v1/hotels/**", "/api/v1/hotels/*/rooms").permitAll() // 로그인,
-                                                                                                                       // 회원가입,
-                                                                                                                       // 호텔
-                                                                                                                       // 조회는
-                                                                                                                       // 접근
-                                                                                                                       // 허용
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/api/v1/hotels/**", "/error").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/hotel/**").hasAnyRole("HOTEL_ADMIN", "ADMIN")
                         .anyRequest().authenticated())
+                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
 

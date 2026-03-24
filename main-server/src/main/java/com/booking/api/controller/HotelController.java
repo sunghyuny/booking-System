@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,8 +22,10 @@ public class HotelController {
 
     // 전체 호텔 조회
     @GetMapping
-    public ResponseEntity<List<HotelDto.HotelResponse>> getAllHotels() {
-        return ResponseEntity.ok(hotelService.getAllHotels());
+    public ResponseEntity<List<HotelDto.HotelResponse>> getAllHotels(
+            @RequestParam(required = false) LocalDate checkInDate,
+            @RequestParam(required = false) LocalDate checkOutDate) {
+        return ResponseEntity.ok(hotelService.getAllHotels(checkInDate, checkOutDate));
     }
 
     // 특정 호텔의 잔여 객실 조회

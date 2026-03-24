@@ -40,6 +40,18 @@ public class Reservation {
     @Column(nullable = false, length = 20)
     private String status; // e.g., PENDING, CONFIRMED, CANCELLED
 
+    @Column(name = "guest_name", length = 50)
+    private String guestName;
+
+    @Column(name = "guest_phone", length = 30)
+    private String guestPhone;
+
+    @Column(name = "guest_count")
+    private Integer guestCount;
+
+    @Column(name = "special_requests", length = 500)
+    private String specialRequests;
+
     // AI 예측 노쇼 확률을 관리자 대시보드에서 활용하기 위한 필드
     @Column(name = "ai_cancel_prob")
     private Double aiCancelProb;
@@ -54,13 +66,17 @@ public class Reservation {
 
     @Builder
     public Reservation(User user, Room room, LocalDate checkInDate, LocalDate checkOutDate, Integer totalPrice,
-            String status) {
+            String status, String guestName, String guestPhone, Integer guestCount, String specialRequests) {
         this.user = user;
         this.room = room;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.totalPrice = totalPrice;
         this.status = status;
+        this.guestName = guestName;
+        this.guestPhone = guestPhone;
+        this.guestCount = guestCount;
+        this.specialRequests = specialRequests;
     }
 
     // AI 확률 업데이트를 위한 메서드
